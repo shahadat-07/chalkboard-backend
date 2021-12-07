@@ -23,12 +23,12 @@ mongoose
   })
   .then((result) => console.log("Database Connected Successfully"))
   .catch((err) => console.log(err.message));
-  // res.send(status, body): Use res.status(status).send(body)
+  
 app.post("/signup", (req, res) => {
-  console.log(req.body);
-  const { firstName, lastName, email, password } = req.body;
+  // console.log(req.body);
+  const { firstName, lastName, email, password, role } = req.body;
   // console.log("Working")
-  const user = new User({ firstName, lastName, email, password });
+  const user = new User({ firstName, lastName, email, password, role});
   user.save((err) => {
     if (err) {
      if(err.code === 11000){
@@ -57,6 +57,12 @@ app.post("/login", (req, res) => {
         }
       });
     }
+  });
+});
+
+app.get("/students", (req, res) => {
+  User.find({}, (err, users) => {
+    res.send(users)
   });
 });
 
