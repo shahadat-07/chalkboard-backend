@@ -127,14 +127,15 @@ app.get("/findAndDelete/:id", (req, res) => {
 const Order = require("./models/order");
 app.post("/sendOrder", (req, res) => {
   // console.log(req.body);
-  const { courseTitle, userEmail, userName, courseContent, courseInformation } = req.body;
+  const { courseTitle, userEmail, userName, courseContent, courseInformation } =
+    req.body;
 
   const order = new Order({
     courseTitle,
     userEmail,
     userName,
     courseContent,
-    courseInformation
+    courseInformation,
   });
   order.save((err) => {
     if (err) {
@@ -151,14 +152,15 @@ app.post("/sendOrder", (req, res) => {
 const Enrollment = require("./models/enrollment");
 app.post("/enrollment", (req, res) => {
   // console.log(req.body);
-  const { courseTitle, userEmail, userName , courseContent, courseInformation} = req.body;
+  const { courseTitle, userEmail, userName, courseContent, courseInformation } =
+    req.body;
 
   const enrollment = new Enrollment({
     courseTitle,
     userEmail,
     userName,
     courseContent,
-    courseInformation
+    courseInformation,
   });
   enrollment.save((err) => {
     if (err) {
@@ -174,10 +176,11 @@ app.post("/enrollment", (req, res) => {
 
 const Assignment = require("./models/assignment");
 app.post("/addAssignment", (req, res) => {
-  const { course, assignment} = req.body;
+  const { course, assignment } = req.body;
 
   const assignmentData = new Assignment({
-    course, assignment
+    course,
+    assignment,
   });
   assignmentData.save((err) => {
     if (err) {
@@ -198,7 +201,7 @@ app.get("/getOrder", (req, res) => {
 });
 
 app.get("/getAssignment", (req, res) => {
-  Assignment.find({ }, (err, assignment) => {
+  Assignment.find({}, (err, assignment) => {
     res.send(assignment);
     // console.log(courses);
   });
@@ -207,7 +210,7 @@ app.get("/enrollmented/:email", (req, res) => {
   const email = req.params.email;
   Enrollment.find({ userEmail: email }, (err, courses) => {
     res.send(courses);
-    // console.log(courses);
+    console.log("enrollment", courses);
   });
 });
 
