@@ -210,7 +210,11 @@ app.get("/enrollmented/:email", (req, res) => {
   const email = req.params.email;
   Enrollment.find({ userEmail: email }, (err, courses) => {
     res.send(courses);
-    console.log("enrollment", courses);
+  });
+});
+app.get("/enrollmented", (req, res) => {
+  Enrollment.find({}, (err, courses) => {
+    res.send(courses);
   });
 });
 
