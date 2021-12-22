@@ -6,6 +6,7 @@ const EnrollmentSchema = new mongoose.Schema({
   userName: { type: String },
   courseContent: { type: String, required: true },
   courseInformation: { type: String, required: true },
+  instructorEmail: { type: String, required: true },
 });
 
 const model = mongoose.model("enrollment", EnrollmentSchema);

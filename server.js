@@ -69,8 +69,8 @@ const Course = require("./models/course");
 app.post("/addNewCourse", (req, res) => {
   const {
     courseTitle,
-    instructors,
-    roasterOfStudents,
+    instructor,
+    instructorEmail,
     description,
     lessonSequence,
     courseContent,
@@ -79,8 +79,8 @@ app.post("/addNewCourse", (req, res) => {
 
   const course = new Course({
     courseTitle,
-    instructors,
-    roasterOfStudents,
+    instructor,
+    instructorEmail,
     description,
     lessonSequence,
     courseContent,
@@ -107,6 +107,16 @@ app.get("/courses", (req, res) => {
     }
   );
 });
+//findCoursesByProfessiorEmail
+app.get("/findByEmail", (req, res) => {
+  const filter = req.query.search;
+  Course.find(
+    { instructorEmail: { $regex: filter, $options: "i" } },
+    (err, courses) => {
+      res.send(courses);
+    }
+  );
+});
 
 app.get("/findAndDelete/:id", (req, res) => {
   const id = req.params;
@@ -127,8 +137,14 @@ app.get("/findAndDelete/:id", (req, res) => {
 const Order = require("./models/order");
 app.post("/sendOrder", (req, res) => {
   // console.log(req.body);
-  const { courseTitle, userEmail, userName, courseContent, courseInformation } =
-    req.body;
+  const {
+    courseTitle,
+    userEmail,
+    userName,
+    courseContent,
+    courseInformation,
+    instructorEmail,
+  } = req.body;
 
   const order = new Order({
     courseTitle,
@@ -136,6 +152,7 @@ app.post("/sendOrder", (req, res) => {
     userName,
     courseContent,
     courseInformation,
+    instructorEmail,
   });
   order.save((err) => {
     if (err) {
@@ -152,8 +169,14 @@ app.post("/sendOrder", (req, res) => {
 const Enrollment = require("./models/enrollment");
 app.post("/enrollment", (req, res) => {
   // console.log(req.body);
-  const { courseTitle, userEmail, userName, courseContent, courseInformation } =
-    req.body;
+  const {
+    courseTitle,
+    userEmail,
+    userName,
+    courseContent,
+    courseInformation,
+    instructorEmail,
+  } = req.body;
 
   const enrollment = new Enrollment({
     courseTitle,
@@ -161,6 +184,7 @@ app.post("/enrollment", (req, res) => {
     userName,
     courseContent,
     courseInformation,
+    instructorEmail,
   });
   enrollment.save((err) => {
     if (err) {
@@ -199,9 +223,14 @@ app.get("/getOrder", (req, res) => {
     res.send(orders);
   });
 });
+// let ids = ['id1','id2','id3']
+// let data = await MyModel.find(
+//   {'_id': { $in: ids}}
+// );
 
 app.get("/getAssignment", (req, res) => {
-  Assignment.find({}, (err, assignment) => {
+  let courses = ["Python", "Calculus 1"];
+  Assignment.find({ course: { $in: courses } }, (err, assignment) => {
     res.send(assignment);
     // console.log(courses);
   });
@@ -209,6 +238,13 @@ app.get("/getAssignment", (req, res) => {
 app.get("/enrollmented/:email", (req, res) => {
   const email = req.params.email;
   Enrollment.find({ userEmail: email }, (err, courses) => {
+    res.send(courses);
+  });
+});
+//findByProfessorEmail
+app.get("/enrollProfessior/:email", (req, res) => {
+  const email = req.params.email;
+  Enrollment.find({ instructorEmail: email }, (err, courses) => {
     res.send(courses);
   });
 });
