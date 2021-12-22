@@ -223,14 +223,10 @@ app.get("/getOrder", (req, res) => {
     res.send(orders);
   });
 });
-// let ids = ['id1','id2','id3']
-// let data = await MyModel.find(
-//   {'_id': { $in: ids}}
-// );
 
 app.get("/getAssignment", (req, res) => {
-  let courses = ["Python", "Calculus 1"];
-  Assignment.find({ course: { $in: courses } }, (err, assignment) => {
+  // let courses = ["Python", "Calculus 1"];
+  Assignment.find({}, (err, assignment) => {
     res.send(assignment);
     // console.log(courses);
   });
